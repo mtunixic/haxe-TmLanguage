@@ -58,17 +58,19 @@ repository:
     - include: '#punctuation-terminator'
     - include: '#punctuation-comma'
     - include: '#punctuation-accessor'
+    - match: '\b([A-Z]\w*)\b(?=\s*(,|\}))'
+      name: constant.other.enum.hx
     - include: '#identifiers'
   identifiers:
     patterns:
     - include: '#constant-name'
-    - include: '#type-name'
     - include: '#identifier-name'
+    - include: '#type-name'
   package:
     begin: package\b
     beginCaptures:
       '0': {name: keyword.other.package.hx}
-    end: $|(;)
+    end: $|(;) 
     endCaptures:
       '1': {name: punctuation.terminator.hx}
     patterns:
