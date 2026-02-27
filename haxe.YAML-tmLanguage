@@ -108,7 +108,9 @@ repository:
     - include: '#punctuation-accessor'
     - include: '#type-path-type-name'
   type-path-type-name:
-    match: \b(_*[A-Z]\w*)\b
+    # OLD: filter anything pascal-cased as Class (bad) match: \b(_*[A-Z]\w*)\b
+    # NEW: filters out functions (good), probably the right way to do it i think
+    match: (?<!\bfunction\s)\b(_*[A-Z]\w*)\b
     name: entity.name.type.hx
   type-path-package-name:
     match: \b([_A-Za-z]\w*)\b
