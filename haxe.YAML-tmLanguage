@@ -70,7 +70,7 @@ repository:
     begin: package\b
     beginCaptures:
       '0': {name: keyword.other.package.hx}
-    end: $|(;) 
+    end: $|(;)
     endCaptures:
       '1': {name: punctuation.terminator.hx}
     patterns:
