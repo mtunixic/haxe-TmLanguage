@@ -49,9 +49,8 @@ repository:
     - include: '#for-loop'
     - include: '#keywords'
     - include: '#arrow-function'
-    - include: '#type-member-access'
+
     - include: '#method-call-dotted'
-    - include: '#method-call'
     - include: '#method-call-simple'
     - include: '#enum-constructor-call'
     - include: '#punctuation-braces'
@@ -62,6 +61,11 @@ repository:
     - include: '#punctuation-comma'
     - include: '#punctuation-accessor'
     - include: '#identifiers'
+  enum-member:
+    # enum pascal fix
+    match: (?m)^\s*([_A-Z]\w*)(?=\s*(?:;|,|\n))
+    captures:
+      '1': { name: variable.other.hx }
   identifiers:
     patterns:
     - include: '#constant-name'
@@ -105,13 +109,27 @@ repository:
     - match: \b([_A-Za-z]\w*)\b(?=\s*(as|in|$|(;)))
       name: variable.other.hxt
     - include: '#type-path-package-name'
+  method-call-dotted:
+    match: \b((?:_*[a-z]\w*\.)*)(_*[A-Z]\w*)(\.)([_A-Za-z]\w*)(?=\s*\()
+    captures:
+      '1': { name: support.package.hx }      # package / earlier path segments (optional)
+      '2': { name: entity.name.type.hx }     # Class / Type token (PascalCase)
+      '3': { name: punctuation.accessor.hx } # the dot between Class and Function
+      '4': { name: entity.name.function.hx } # the Method token
+
+  method-call-simple:
+    match: \b([_A-Za-z]\w*)(?=\s*\()
+    captures:
+      '1': { name: entity.name.function.hx }
   type-path:
     patterns:
     - include: '#global'
     - include: '#punctuation-accessor'
     - include: '#type-path-type-name'
   type-path-type-name:
-    match: \b(_*[A-Z]\w*)\b
+    # OLD: match anything uppercase as class (BAD): match: \b(_*[A-Z]\w*)\b
+    # NEW: filter functions, vars, finals, and things that start with "("
+    match: (?<!\bfunction\s)(?<!\bvar\s)(?<!\bfinal\s)\b(_*[A-Z]\w*)\b(?!\s*\()
     name: entity.name.type.hx
   type-path-package-name:
     match: \b([_A-Za-z]\w*)\b
@@ -890,8 +908,8 @@ repository:
       - include: '#operator-assignment'
       - include: '#punctuation-comma'
       - include: '#keywords'
-      - include: '#enum-constructor-call'   # ADDED: so EnumParam(x,y) gets EnumParam colored blue instead of white
-      - include: '#method-call'
+      - include: '#method-call-dotted'
+      - include: '#method-call-simple'
       - include: '#identifiers'
     - match: \b(if|else|return|do|while|for|break|continue|switch|case|default)\b
       name: keyword.control.flow-control.hx
@@ -937,31 +955,6 @@ repository:
   modifiers-inheritance:
     match: \b(implements|extends)\b
     name: storage.modifier.hx
-  method-call-dotted:
-    # matches: Class.method(...)
-    match: \b(_*[A-Z][a-z]\w*)(\.)([_A-Za-z]\w*)(?=\s*\()
-    captures:
-      '1': { name: entity.name.type.hx }     # class
-      '2': { name: punctuation.accessor.hx } # dot between class and method
-      '3': { name: entity.name.function.hx } # method
-  method-call:
-    # macro/untyped calls and regular lower-case function calls with parentheses
-    begin: \b(?:(__(?:addressOf|as|call|checked|cpp|cs|define_feature|delete|feature|field|fixed|foreach|forin|has_next|hkeys|in|int|is|java|js|keys|lock|lua|lua_table|new|php|physeq|prefix|ptr|resources|rethrow|set|setfield|sizeof|type|typeof|unprotect|unsafe|valueOf|var|vector|vmem_get|vmem_set|vmem_sign|instanceof|strict_eq|strict_neq)__)|([_a-z]\w*))\s*(\()
-    beginCaptures:
-      '1': {name: keyword.other.untyped-function.hx}
-      '2': {name: entity.name.function.hx}
-      '3': {name: meta.brace.round.hx}
-    end: (\))
-    endCaptures:
-      '1': {name: meta.brace.round.hx}
-    patterns:
-      - include: '#block'
-      - include: '#block-contents'
-  method-call-simple:
-    # helper that lazily tokenizes functions if they end with ()
-    match: \b([_A-Za-z]\w*)(?=\s*\()
-    captures:
-      '1': { name: entity.name.function.hx }
   enum-constructor-call:
     # largely the same regex as #type-name
     begin: \b(?<!\.)((_*[a-z]\w*\.)*)(_*[A-Z]\w*)(?:(\.)(_*[A-Z]\w*[a-z]\w*))*\s*(\()
@@ -1139,17 +1132,12 @@ repository:
         '1': {name: support.class.builtin.hx}
         '2': {name: support.package.hx}
         '3': {name: entity.name.type.hx}
-    - begin: \b(?<![^.]\.)((?:_*[a-z]\w*\.)*)(_*[A-Z]\w*)
-      beginCaptures:
-        '1': { name: support.package.hx }
-        '2': { name: entity.name.type.hx }
-      end: (?=\b|(?=\s*\(|\s*<))
-      # var final pascal fix
-      patterns:
-        - match: (\.)
-          name: punctuation.accessor.hx
-        - match: (_*[A-Z]\w*)
-          name: entity.name.type.hx
+    - match: \b(?<![^.]\.)((_*[a-z]\w*\.)*)(_*[A-Z]\w*)(?:(\.)(_*[A-Z]\w*[a-z]\w*))*\b(?!\s*\() # try ensuring that anything ending with "(" wont be classified as types
+      captures:
+        '1': {name: support.package.hx}
+        '3': {name: entity.name.type.hx}
+        '4': {name: punctuation.accessor.hx}
+        '5': {name: entity.name.type.hx}
   type-parameters:
     begin: (<)
     beginCaptures:
