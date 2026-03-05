@@ -937,13 +937,12 @@ repository:
     match: \b(implements|extends)\b
     name: storage.modifier.hx
   method-call-dotted:
-    # matches: pkg.sub.Class.method(...)  OR Class.method(...)
-    match: \b((?:_*[a-z]\w*\.)*)(_*[A-Z][a-z]\w*)(\.)([_A-Za-z]\w*)(?=\s*\()
+    # matches: Class.method(...)
+    match: \b(_*[A-Z][a-z]\w*)(\.)([_A-Za-z]\w*)(?=\s*\()
     captures:
-      '1': { name: support.package.hx }      # package / earlier path segments (optional)
-      '2': { name: entity.name.type.hx }     # the Class / Type token (PascalCase, must contain lowercase)
-      '3': { name: punctuation.accessor.hx } # the dot between Class and Method
-      '4': { name: entity.name.function.hx } # the Method token
+      '1': { name: entity.name.type.hx }     # class
+      '2': { name: punctuation.accessor.hx } # dot between class and method
+      '3': { name: entity.name.function.hx } # method
   method-call:
     # macro/untyped calls and regular lower-case function calls with parentheses
     begin: \b(?:(__(?:addressOf|as|call|checked|cpp|cs|define_feature|delete|feature|field|fixed|foreach|forin|has_next|hkeys|in|int|is|java|js|keys|lock|lua|lua_table|new|php|physeq|prefix|ptr|resources|rethrow|set|setfield|sizeof|type|typeof|unprotect|unsafe|valueOf|var|vector|vmem_get|vmem_set|vmem_sign|instanceof|strict_eq|strict_neq)__)|([_a-z]\w*))\s*(\()
@@ -958,6 +957,7 @@ repository:
       - include: '#block'
       - include: '#block-contents'
   method-call-simple:
+    # helper that lazily tokenizes functions if they end with ()
     match: \b([_A-Za-z]\w*)(?=\s*\()
     captures:
       '1': { name: entity.name.function.hx }
