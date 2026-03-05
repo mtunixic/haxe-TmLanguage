@@ -60,6 +60,7 @@ repository:
     - include: '#punctuation-terminator'
     - include: '#punctuation-comma'
     - include: '#punctuation-accessor'
+    - include: '#type-member-access'
     - include: '#identifiers'
   enum-member:
     # enum pascal fix
@@ -110,13 +111,12 @@ repository:
       name: variable.other.hxt
     - include: '#type-path-package-name'
   method-call-dotted:
-    match: \b((?:_*[a-z]\w*\.)*)(_*[A-Z]\w*)(\.)([_A-Za-z]\w*)(?=\s*\()
+    match: \b((?:_*[a-z]\w*\.)*)(_*[A-Z][a-z]\w*)(\.)([_A-Za-z]\w*)(?=\s*\()
     captures:
       '1': { name: support.package.hx }      # package / earlier path segments (optional)
       '2': { name: entity.name.type.hx }     # Class / Type token (PascalCase)
       '3': { name: punctuation.accessor.hx } # the dot between Class and Function
       '4': { name: entity.name.function.hx } # the Method token
-
   method-call-simple:
     match: \b([_A-Za-z]\w*)(?=\s*\()
     captures:
@@ -129,7 +129,7 @@ repository:
   type-path-type-name:
     # OLD: match anything uppercase as class (BAD): match: \b(_*[A-Z]\w*)\b
     # NEW: filter functions, vars, finals, and things that start with "("
-    match: (?<!\bfunction\s)(?<!\bvar\s)(?<!\bfinal\s)\b(_*[A-Z]\w*)\b(?!\s*\()
+    match: (?<!\bfunction\s)(?<!\bvar\s)(?<!\bfinal\s)\b(_*[A-Z][a-z]\w*)\b(?!\s*\()
     name: entity.name.type.hx
   type-path-package-name:
     match: \b([_A-Za-z]\w*)\b
@@ -1114,13 +1114,13 @@ repository:
     # old: \b(_*[A-Z]\w*)
     patterns:
       # Class.method()
-      - match: \b(_*[A-Z][A-Za-z0-9]*[a-z]\w*)(\.)([_A-Za-z]\w*)(?=\()
+      - match: \b(_*[A-Z][a-z]+[A-Za-z0-9]*)(\.)([_A-Za-z]\w*)(?=\()
         captures:
           '1': { name: entity.name.type.hx }
           '2': { name: punctuation.accessor.hx }
           '3': { name: entity.name.function.hx }
       # Class.variable
-      - match: \b(_*[A-Z][A-Za-z0-9]*[a-z]\w*)(\.)([_A-Za-z]\w*)
+      - match: \b(_*[A-Z][a-z]+[A-Za-z0-9]*)(\.)([_A-Za-z]\w*)
         captures:
           '1': { name: entity.name.type.hx }
           '2': { name: punctuation.accessor.hx }
@@ -1132,7 +1132,7 @@ repository:
         '1': {name: support.class.builtin.hx}
         '2': {name: support.package.hx}
         '3': {name: entity.name.type.hx}
-    - match: \b(?<![^.]\.)((_*[a-z]\w*\.)*)(_*[A-Z]\w*)(?:(\.)(_*[A-Z]\w*[a-z]\w*))*\b(?!\s*\() # try ensuring that anything ending with "(" wont be classified as types
+    - match: \b(?<![^.]\.)((_*[a-z]\w*\.)*)(_*[A-Z][a-z]\w*)(?:(\.)(_*[A-Z]\w*[a-z]\w*))*\b(?!\s*\() # try ensuring that anything ending with "(" wont be classified as types
       captures:
         '1': {name: support.package.hx}
         '3': {name: entity.name.type.hx}

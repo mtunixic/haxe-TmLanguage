@@ -184,15 +184,7 @@
 				</dict>
 				<dict>
 					<key>include</key>
-					<string>#type-member-access</string>
-				</dict>
-				<dict>
-					<key>include</key>
 					<string>#method-call-dotted</string>
-				</dict>
-				<dict>
-					<key>include</key>
-					<string>#method-call</string>
 				</dict>
 				<dict>
 					<key>include</key>
@@ -232,9 +224,26 @@
 				</dict>
 				<dict>
 					<key>include</key>
+					<string>#type-member-access</string>
+				</dict>
+				<dict>
+					<key>include</key>
 					<string>#identifiers</string>
 				</dict>
 			</array>
+		</dict>
+		<key>enum-member</key>
+		<dict>
+			<key>match</key>
+			<string>\b([_A-Za-z]\w*)(?=\s*\()</string>
+			<key>captures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>entity.name.function.hx</string>
+				</dict>
+			</dict>
 		</dict>
 		<key>identifiers</key>
 		<dict>
@@ -380,6 +389,47 @@
 				</dict>
 			</array>
 		</dict>
+		<key>method-call-dotted</key>
+		<dict>
+			<key>match</key>
+			<string>\b((?:_*[a-z]\w*\.)*)(_*[A-Z][a-z]\w*)(\.)([_A-Za-z]\w*)(?=\s*\()</string>
+			<key>captures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>support.package.hx</string>
+				</dict>
+				<key>2</key>
+				<dict>
+					<key>name</key>
+					<string>entity.name.type.hx</string>
+				</dict>
+				<key>3</key>
+				<dict>
+					<key>name</key>
+					<string>punctuation.accessor.hx</string>
+				</dict>
+				<key>4</key>
+				<dict>
+					<key>name</key>
+					<string>entity.name.function.hx</string>
+				</dict>
+			</dict>
+		</dict>
+		<key>method-call-simple</key>
+		<dict>
+			<key>match</key>
+			<string>\b([_A-Za-z]\w*)(?=\s*\()</string>
+			<key>captures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>entity.name.function.hx</string>
+				</dict>
+			</dict>
+		</dict>
 		<key>type-path</key>
 		<dict>
 			<key>patterns</key>
@@ -401,7 +451,7 @@
 		<key>type-path-type-name</key>
 		<dict>
 			<key>match</key>
-			<string>\b(_*[A-Z]\w*)\b</string>
+			<string>(?&lt;!\bfunction\s)(?&lt;!\bvar\s)(?&lt;!\bfinal\s)\b(_*[A-Z][a-z]\w*)\b(?!\s*\()</string>
 			<key>name</key>
 			<string>entity.name.type.hx</string>
 		</dict>
@@ -805,19 +855,6 @@
 					<string>#identifiers</string>
 				</dict>
 			</array>
-		</dict>
-		<key>enum-member</key>
-		<dict>
-			<key>match</key>
-			<string>\b([_A-Za-z]\w*)(?=\s*\()</string>
-			<key>captures</key>
-			<dict>
-				<key>1</key>
-				<dict>
-					<key>name</key>
-					<string>entity.name.function.hx</string>
-				</dict>
-			</dict>
 		</dict>
 		<key>interface</key>
 		<dict>
@@ -3014,11 +3051,11 @@
 						</dict>
 						<dict>
 							<key>include</key>
-							<string>#enum-constructor-call</string>
+							<string>#method-call-dotted</string>
 						</dict>
 						<dict>
 							<key>include</key>
-							<string>#method-call</string>
+							<string>#method-call-simple</string>
 						</dict>
 						<dict>
 							<key>include</key>
@@ -3162,86 +3199,6 @@
 			<string>\b(implements|extends)\b</string>
 			<key>name</key>
 			<string>storage.modifier.hx</string>
-		</dict>
-		<key>method-call-dotted</key>
-		<dict>
-			<key>match</key>
-			<string>\b(_*[A-Z][a-z]\w*)(\.)([_A-Za-z]\w*)(?=\s*\()</string>
-			<key>captures</key>
-			<dict>
-				<key>1</key>
-				<dict>
-					<key>name</key>
-					<string>entity.name.type.hx</string>
-				</dict>
-				<key>2</key>
-				<dict>
-					<key>name</key>
-					<string>punctuation.accessor.hx</string>
-				</dict>
-				<key>3</key>
-				<dict>
-					<key>name</key>
-					<string>entity.name.function.hx</string>
-				</dict>
-			</dict>
-		</dict>
-		<key>method-call</key>
-		<dict>
-			<key>begin</key>
-			<string>\b(?:(__(?:addressOf|as|call|checked|cpp|cs|define_feature|delete|feature|field|fixed|foreach|forin|has_next|hkeys|in|int|is|java|js|keys|lock|lua|lua_table|new|php|physeq|prefix|ptr|resources|rethrow|set|setfield|sizeof|type|typeof|unprotect|unsafe|valueOf|var|vector|vmem_get|vmem_set|vmem_sign|instanceof|strict_eq|strict_neq)__)|([_a-z]\w*))\s*(\()</string>
-			<key>beginCaptures</key>
-			<dict>
-				<key>1</key>
-				<dict>
-					<key>name</key>
-					<string>keyword.other.untyped-function.hx</string>
-				</dict>
-				<key>2</key>
-				<dict>
-					<key>name</key>
-					<string>entity.name.function.hx</string>
-				</dict>
-				<key>3</key>
-				<dict>
-					<key>name</key>
-					<string>meta.brace.round.hx</string>
-				</dict>
-			</dict>
-			<key>end</key>
-			<string>(\))</string>
-			<key>endCaptures</key>
-			<dict>
-				<key>1</key>
-				<dict>
-					<key>name</key>
-					<string>meta.brace.round.hx</string>
-				</dict>
-			</dict>
-			<key>patterns</key>
-			<array>
-				<dict>
-					<key>include</key>
-					<string>#block</string>
-				</dict>
-				<dict>
-					<key>include</key>
-					<string>#block-contents</string>
-				</dict>
-			</array>
-		</dict>
-		<key>method-call-simple</key>
-		<dict>
-			<key>match</key>
-			<string>\b([_A-Za-z]\w*)(?=\s*\()</string>
-			<key>captures</key>
-			<dict>
-				<key>1</key>
-				<dict>
-					<key>name</key>
-					<string>entity.name.function.hx</string>
-				</dict>
-			</dict>
 		</dict>
 		<key>enum-constructor-call</key>
 		<dict>
@@ -3747,7 +3704,7 @@
 			<array>
 				<dict>
 					<key>match</key>
-					<string>\b(_*[A-Z]\w*)(\.)([_A-Za-z]\w*)(?=\()</string>
+					<string>\b(_*[A-Z][a-z]+[A-Za-z0-9]*)(\.)([_A-Za-z]\w*)(?=\()</string>
 					<key>captures</key>
 					<dict>
 						<key>1</key>
@@ -3769,7 +3726,7 @@
 				</dict>
 				<dict>
 					<key>match</key>
-					<string>\b(_*[A-Z][A-Za-z0-9]*[a-z]\w*)(\.)([_A-Za-z]\w*)2</string>
+					<string>\b(_*[A-Z][a-z]+[A-Za-z0-9]*)(\.)([_A-Za-z]\w*)</string>
 					<key>captures</key>
 					<dict>
 						<key>1</key>
@@ -3818,38 +3775,31 @@
 					</dict>
 				</dict>
 				<dict>
-					<key>begin</key>
-					<string>\b(?&lt;![^.]\.)((?:_*[a-z]\w*\.)*)(_*[A-Z]\w*)</string>
-					<key>beginCaptures</key>
+					<key>match</key>
+					<string>\b(?&lt;![^.]\.)((_*[a-z]\w*\.)*)(_*[A-Z][a-z]\w*)(?:(\.)(_*[A-Z]\w*[a-z]\w*))*\b(?!\s*\()</string>
+					<key>captures</key>
 					<dict>
 						<key>1</key>
 						<dict>
 							<key>name</key>
 							<string>support.package.hx</string>
 						</dict>
-						<key>2</key>
+						<key>3</key>
+						<dict>
+							<key>name</key>
+							<string>entity.name.type.hx</string>
+						</dict>
+						<key>4</key>
+						<dict>
+							<key>name</key>
+							<string>punctuation.accessor.hx</string>
+						</dict>
+						<key>5</key>
 						<dict>
 							<key>name</key>
 							<string>entity.name.type.hx</string>
 						</dict>
 					</dict>
-					<key>end</key>
-					<string>(?=\b|(?=\s*\(|\s*&lt;))</string>
-					<key>patterns</key>
-					<array>
-						<dict>
-							<key>match</key>
-							<string>(\.)</string>
-							<key>name</key>
-							<string>punctuation.accessor.hx</string>
-						</dict>
-						<dict>
-							<key>match</key>
-							<string>(_*[A-Z]\w*)</string>
-							<key>name</key>
-							<string>entity.name.type.hx</string>
-						</dict>
-					</array>
 				</dict>
 			</array>
 		</dict>
