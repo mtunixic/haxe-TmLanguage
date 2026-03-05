@@ -1,11 +1,23 @@
 {
-	"name": "haxe-tm-language",
-	"devDependencies": {
-		"lix": "^15.10.1",
-		"vscode-oniguruma": "^1.6.2",
-		"vscode-textmate": "^7.0.1"
-	},
-	"scripts": {
-		"postinstall": "npx lix download"
-	}
+  "name": "haxe-tm-language",
+  "displayName": "Haxe",
+  "publisher": "publisher-name",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.50.0"
+  },
+  "main": "./out/extension.js",
+  "activationEvents": [
+    "onLanguage:haxe"
+  ],
+  "scripts": {
+    "vscode:prepublish": "npm run build",
+    "build": "tsc -p .",
+    "watch": "tsc -watch -p ."
+  },
+  "devDependencies": {
+    "typescript": "^4.9.5",
+    "@types/vscode": "^1.76.0"
+  },
+  "dependencies": {}
 }

@@ -184,19 +184,7 @@
 				</dict>
 				<dict>
 					<key>include</key>
-					<string>#type-member-access</string>
-				</dict>
-				<dict>
-					<key>include</key>
-					<string>#method-call-dotted</string>
-				</dict>
-				<dict>
-					<key>include</key>
 					<string>#method-call</string>
-				</dict>
-				<dict>
-					<key>include</key>
-					<string>#method-call-simple</string>
 				</dict>
 				<dict>
 					<key>include</key>
@@ -246,11 +234,11 @@
 				</dict>
 				<dict>
 					<key>include</key>
-					<string>#identifier-name</string>
+					<string>#type-name</string>
 				</dict>
 				<dict>
 					<key>include</key>
-					<string>#type-name</string>
+					<string>#identifier-name</string>
 				</dict>
 			</array>
 		</dict>
@@ -798,26 +786,9 @@
 				</dict>
 				<dict>
 					<key>include</key>
-					<string>#enum-member</string>
-				</dict>
-				<dict>
-					<key>include</key>
 					<string>#identifiers</string>
 				</dict>
 			</array>
-		</dict>
-		<key>enum-member</key>
-		<dict>
-			<key>match</key>
-			<string>\b([_A-Za-z]\w*)(?=\s*\()</string>
-			<key>captures</key>
-			<dict>
-				<key>1</key>
-				<dict>
-					<key>name</key>
-					<string>entity.name.function.hx</string>
-				</dict>
-			</dict>
 		</dict>
 		<key>interface</key>
 		<dict>
@@ -2707,63 +2678,25 @@
 		</dict>
 		<key>new-expr</key>
 		<dict>
+			<key>name</key>
+			<string>new.expr.hx</string>
+			<key>begin</key>
+			<string>(?&lt;!\.)\b(new)\b</string>
+			<key>beginCaptures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>keyword.operator.new.hx</string>
+				</dict>
+			</dict>
+			<key>end</key>
+			<string>(?=$|\()</string>
 			<key>patterns</key>
 			<array>
 				<dict>
-					<key>begin</key>
-					<string>(?&lt;!\.)\b(new)\b\s*((?:_*[a-z]\w*\.)*(?:_*[A-Z]\w*))(?:\s*)(&lt;)</string>
-					<key>beginCaptures</key>
-					<dict>
-						<key>1</key>
-						<dict>
-							<key>name</key>
-							<string>keyword.operator.new.hx</string>
-						</dict>
-						<key>2</key>
-						<dict>
-							<key>name</key>
-							<string>entity.name.type.hx</string>
-						</dict>
-						<key>3</key>
-						<dict>
-							<key>name</key>
-							<string>punctuation.definition.typeparameters.begin.hx</string>
-						</dict>
-					</dict>
-					<key>end</key>
-					<string>(&gt;)</string>
-					<key>endCaptures</key>
-					<dict>
-						<key>1</key>
-						<dict>
-							<key>name</key>
-							<string>punctuation.definition.typeparameters.end.hx</string>
-						</dict>
-					</dict>
-					<key>patterns</key>
-					<array>
-						<dict>
-							<key>include</key>
-							<string>#type</string>
-						</dict>
-					</array>
-				</dict>
-				<dict>
-					<key>match</key>
-					<string>(?&lt;!\.)\b(new)\b\s*((?:_*[a-z]\w*\.)*(?:_*[A-Z]\w*))</string>
-					<key>captures</key>
-					<dict>
-						<key>1</key>
-						<dict>
-							<key>name</key>
-							<string>keyword.operator.new.hx</string>
-						</dict>
-						<key>2</key>
-						<dict>
-							<key>name</key>
-							<string>entity.name.type.hx</string>
-						</dict>
-					</dict>
+					<key>include</key>
+					<string>#type</string>
 				</dict>
 			</array>
 		</dict>
@@ -3014,10 +2947,6 @@
 						</dict>
 						<dict>
 							<key>include</key>
-							<string>#enum-constructor-call</string>
-						</dict>
-						<dict>
-							<key>include</key>
 							<string>#method-call</string>
 						</dict>
 						<dict>
@@ -3058,15 +2987,9 @@
 				</dict>
 				<dict>
 					<key>match</key>
-					<string>\b(this)\b</string>
+					<string>\b(this|super)\b</string>
 					<key>name</key>
-					<string>variable.language.this.hx</string>
-				</dict>
-				<dict>
-					<key>match</key>
-					<string>\b(super)\b</string>
-					<key>name</key>
-					<string>variable.language.super.hx</string>
+					<string>variable.language.hx</string>
 				</dict>
 				<dict>
 					<key>match</key>
@@ -3163,29 +3086,6 @@
 			<key>name</key>
 			<string>storage.modifier.hx</string>
 		</dict>
-		<key>method-call-dotted</key>
-		<dict>
-			<key>match</key>
-			<string>\b(_*[A-Z][a-z]\w*)(\.)([_A-Za-z]\w*)(?=\s*\()</string>
-			<key>captures</key>
-			<dict>
-				<key>1</key>
-				<dict>
-					<key>name</key>
-					<string>entity.name.type.hx</string>
-				</dict>
-				<key>2</key>
-				<dict>
-					<key>name</key>
-					<string>punctuation.accessor.hx</string>
-				</dict>
-				<key>3</key>
-				<dict>
-					<key>name</key>
-					<string>entity.name.function.hx</string>
-				</dict>
-			</dict>
-		</dict>
 		<key>method-call</key>
 		<dict>
 			<key>begin</key>
@@ -3230,19 +3130,6 @@
 				</dict>
 			</array>
 		</dict>
-		<key>method-call-simple</key>
-		<dict>
-			<key>match</key>
-			<string>\b([_A-Za-z]\w*)(?=\s*\()</string>
-			<key>captures</key>
-			<dict>
-				<key>1</key>
-				<dict>
-					<key>name</key>
-					<string>entity.name.function.hx</string>
-				</dict>
-			</dict>
-		</dict>
 		<key>enum-constructor-call</key>
 		<dict>
 			<key>begin</key>
@@ -3257,7 +3144,7 @@
 				<key>3</key>
 				<dict>
 					<key>name</key>
-					<string>entity.name.function.hx</string>
+					<string>entity.name.type.hx</string>
 				</dict>
 				<key>4</key>
 				<dict>
@@ -3267,7 +3154,7 @@
 				<key>5</key>
 				<dict>
 					<key>name</key>
-					<string>variable.other.hx</string>
+					<string>entity.name.type.hx</string>
 				</dict>
 				<key>6</key>
 				<dict>
@@ -3741,56 +3628,6 @@
 				</dict>
 			</array>
 		</dict>
-		<key>type-member-access</key>
-		<dict>
-			<key>patterns</key>
-			<array>
-				<dict>
-					<key>match</key>
-					<string>\b(_*[A-Z]\w*)(\.)([_A-Za-z]\w*)(?=\()</string>
-					<key>captures</key>
-					<dict>
-						<key>1</key>
-						<dict>
-							<key>name</key>
-							<string>entity.name.type.hx</string>
-						</dict>
-						<key>2</key>
-						<dict>
-							<key>name</key>
-							<string>punctuation.accessor.hx</string>
-						</dict>
-						<key>3</key>
-						<dict>
-							<key>name</key>
-							<string>entity.name.function.hx</string>
-						</dict>
-					</dict>
-				</dict>
-				<dict>
-					<key>match</key>
-					<string>\b(_*[A-Z][A-Za-z0-9]*[a-z]\w*)(\.)([_A-Za-z]\w*)2</string>
-					<key>captures</key>
-					<dict>
-						<key>1</key>
-						<dict>
-							<key>name</key>
-							<string>entity.name.type.hx</string>
-						</dict>
-						<key>2</key>
-						<dict>
-							<key>name</key>
-							<string>punctuation.accessor.hx</string>
-						</dict>
-						<key>3</key>
-						<dict>
-							<key>name</key>
-							<string>variable.other.hx</string>
-						</dict>
-					</dict>
-				</dict>
-			</array>
-		</dict>
 		<key>type-name</key>
 		<dict>
 			<key>patterns</key>
@@ -3818,38 +3655,31 @@
 					</dict>
 				</dict>
 				<dict>
-					<key>begin</key>
-					<string>\b(?&lt;![^.]\.)((?:_*[a-z]\w*\.)*)(_*[A-Z]\w*)</string>
-					<key>beginCaptures</key>
+					<key>match</key>
+					<string>\b(?&lt;![^.]\.)((_*[a-z]\w*\.)*)(_*[A-Z]\w*)(?:(\.)(_*[A-Z]\w*[a-z]\w*))*\b</string>
+					<key>captures</key>
 					<dict>
 						<key>1</key>
 						<dict>
 							<key>name</key>
 							<string>support.package.hx</string>
 						</dict>
-						<key>2</key>
+						<key>3</key>
+						<dict>
+							<key>name</key>
+							<string>entity.name.type.hx</string>
+						</dict>
+						<key>4</key>
+						<dict>
+							<key>name</key>
+							<string>support.package.hx</string>
+						</dict>
+						<key>5</key>
 						<dict>
 							<key>name</key>
 							<string>entity.name.type.hx</string>
 						</dict>
 					</dict>
-					<key>end</key>
-					<string>(?=\b|(?=\s*\(|\s*&lt;))</string>
-					<key>patterns</key>
-					<array>
-						<dict>
-							<key>match</key>
-							<string>(\.)</string>
-							<key>name</key>
-							<string>punctuation.accessor.hx</string>
-						</dict>
-						<dict>
-							<key>match</key>
-							<string>(_*[A-Z]\w*)</string>
-							<key>name</key>
-							<string>entity.name.type.hx</string>
-						</dict>
-					</array>
 				</dict>
 			</array>
 		</dict>
