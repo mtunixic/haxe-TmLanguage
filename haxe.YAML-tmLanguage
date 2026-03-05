@@ -33,39 +33,39 @@ repository:
       '0': {name: punctuation.definition.block.end.hx}
     patterns:
     - include: '#block'
-    - include: '#block-contents'
+    - include: 'block-contents'
   block-contents:
     patterns:
-    - include: '#global'
-    - include: '#regex'
-    - include: '#array'
-    - include: '#constants'
-    - include: '#strings'
-    - include: '#metadata'
-    - include: '#method'
-    - include: '#variable'
-    - include: '#modifiers'
-    - include: '#new-expr'
-    - include: '#for-loop'
-    - include: '#keywords'
-    - include: '#arrow-function'
-    - include: '#method-call-dotted'
-    - include: '#method-call'
-    - include: '#method-call-simple'
-    - include: '#enum-constructor-call'
-    - include: '#punctuation-braces'
-    - include: '#macro-reification'
-    - include: '#operators'
-    - include: '#operator-assignment'
-    - include: '#punctuation-terminator'
-    - include: '#punctuation-comma'
-    - include: '#punctuation-accessor'
-    - include: '#identifiers'
+    - include: 'global'
+    - include: 'regex'
+    - include: 'array'
+    - include: 'constants'
+    - include: 'strings'
+    - include: 'metadata'
+    - include: 'method'
+    - include: 'variable'
+    - include: 'modifiers'
+    - include: 'new-expr'
+    - include: 'for-loop'
+    - include: 'keywords'
+    - include: 'arrow-function'
+    - include: 'method-call-dotted'
+    - include: 'method-call'
+    - include: 'method-call-simple'
+    - include: 'enum-constructor-call'
+    - include: 'punctuation-braces'
+    - include: 'macro-reification'
+    - include: 'operators'
+    - include: 'operator-assignment'
+    - include: 'punctuation-terminator'
+    - include: 'punctuation-comma'
+    - include: 'punctuation-accessor'
+    - include: 'identifiers'
   identifiers:
     patterns:
-    - include: '#constant-name'
-    - include: '#identifier-name' # prefer this first (fixes var and finals)
-    - include: '#type-name'
+    - include: 'constant-name'
+    - include: 'identifier-name'  prefer this first (fixes var and finals)
+    - include: 'type-name'
   package:
     begin: package\b
     beginCaptures:
@@ -74,8 +74,8 @@ repository:
     endCaptures:
       '1': {name: punctuation.terminator.hx}
     patterns:
-    - include: '#type-path'
-    - include: '#type-path-package-name'
+    - include: 'type-path'
+    - include: 'type-path-package-name'
   using:
     begin: using\b
     beginCaptures:
@@ -84,8 +84,8 @@ repository:
     endCaptures:
       '1': {name: punctuation.terminator.hx}
     patterns:
-    - include: '#type-path'
-    - include: '#type-path-package-name'
+    - include: 'type-path'
+    - include: 'type-path-package-name'
   import:
     begin: import\b
     beginCaptures:
@@ -94,7 +94,7 @@ repository:
     endCaptures:
       '1': {name: punctuation.terminator.hx}
     patterns:
-    - include: '#type-path'
+    - include: 'type-path'
     - match: \b(as)\b
       name: keyword.control.as.hx
     - match: \b(in)\b
@@ -103,12 +103,12 @@ repository:
       name: constant.language.import-all.hx
     - match: \b([_A-Za-z]\w*)\b(?=\s*(as|in|$|(;)))
       name: variable.other.hxt
-    - include: '#type-path-package-name'
+    - include: 'type-path-package-name'
   type-path:
     patterns:
-    - include: '#global'
-    - include: '#punctuation-accessor'
-    - include: '#type-path-type-name'
+    - include: 'global'
+    - include: 'punctuation-accessor'
+    - include: 'type-path-type-name'
   type-path-type-name:
     match: \b(_*[A-Z]\w*)\b
     name: entity.name.type.hx
@@ -122,9 +122,9 @@ repository:
       '1': {name: punctuation.terminator.hx}
     name: meta.abstract.hx
     patterns:
-    - include: '#abstract-name'
-    - include: '#abstract-name-post'
-    - include: '#abstract-block'
+    - include: 'abstract-name'
+    - include: 'abstract-name-post'
+    - include: 'abstract-block'
   abstract-name:
     begin: \b(abstract)\b
     beginCaptures:
@@ -133,17 +133,17 @@ repository:
     endCaptures:
       '1': {name: entity.name.type.class.hx}
     patterns:
-    - include: '#global'
+    - include: 'global'
   abstract-name-post:
     begin: (?<=\w)
     end: ([\{;])
     endCaptures:
       '1': {name: punctuation.definition.block.begin.hx}
     patterns:
-    - include: '#global'
+    - include: 'global'
     - match: \b(from|to)\b
       name: keyword.other.hx
-    - include: '#type'
+    - include: 'type'
     - match: '[\(\)]'
       name: punctuation.definition.other.hx
   abstract-block:
@@ -153,11 +153,11 @@ repository:
       '1': {name: punctuation.definition.block.end.hx}
     name: meta.block.hx
     patterns:
-    - include: '#method'
-    - include: '#modifiers'
-    - include: '#variable'
-    - include: '#block'
-    - include: '#block-contents'
+    - include: 'method'
+    - include: 'modifiers'
+    - include: 'variable'
+    - include: 'block'
+    - include: 'block-contents'
   class:
     begin: (?=class)
     end: (?<=\})|(;)
@@ -165,9 +165,9 @@ repository:
       '1': {name: punctuation.terminator.hx}
     name: meta.class.hx
     patterns:
-    - include: '#class-name'
-    - include: '#class-name-post'
-    - include: '#class-block'
+    - include: 'class-name'
+    - include: 'class-name-post'
+    - include: 'class-block'
   class-name:
     begin: \b(class)\b
     beginCaptures:
@@ -177,15 +177,15 @@ repository:
       '1': {name: entity.name.type.class.hx}
     name: meta.class.identifier.hx
     patterns:
-    - include: '#global'
+    - include: 'global'
   class-name-post:
     begin: (?<=\w)
     end: ([\{;])
     endCaptures:
       '1': {name: punctuation.definition.block.begin.hx}
     patterns:
-    - include: '#modifiers-inheritance'
-    - include: '#type'
+    - include: 'modifiers-inheritance'
+    - include: 'type'
   class-block:
     begin: (?<=\{)
     end: (\})
@@ -193,11 +193,11 @@ repository:
       '1': {name: punctuation.definition.block.end.hx}
     name: meta.block.hx
     patterns:
-    - include: '#method'
-    - include: '#modifiers'
-    - include: '#variable'
-    - include: '#block'
-    - include: '#block-contents'
+    - include: 'method'
+    - include: 'modifiers'
+    - include: 'variable'
+    - include: 'block'
+    - include: 'block-contents'
   enum:
     begin: (?=enum\s+[A-Z])
     end: (?<=\})|(;)
@@ -205,9 +205,9 @@ repository:
       '1': {name: punctuation.terminator.hx}
     name: meta.enum.hx
     patterns:
-    - include: '#enum-name'
-    - include: '#enum-name-post'
-    - include: '#enum-block'
+    - include: 'enum-name'
+    - include: 'enum-name-post'
+    - include: 'enum-block'
   enum-name:
     begin: \b(enum)\b
     beginCaptures:
@@ -216,14 +216,14 @@ repository:
     endCaptures:
       '1': {name: entity.name.type.class.hx}
     patterns:
-    - include: '#global'
+    - include: 'global'
   enum-name-post:
     begin: (?<=\w)
     end: ([\{;])
     endCaptures:
       '1': {name: punctuation.definition.block.begin.hx}
     patterns:
-    - include: '#type'
+    - include: 'type'
   enum-block:
     begin: (?<=\{)
     end: (\})
@@ -231,17 +231,17 @@ repository:
       '1': {name: punctuation.definition.block.end.hx}
     name: meta.block.hx
     patterns:
-    - include: '#global'
-    - include: '#metadata'
-    - include: '#parameters'
-    - include: '#enum-member'
-    - include: '#identifiers'
+    - include: 'global'
+    - include: 'metadata'
+    - include: 'parameters'
+    - include: 'enum-member'
+    - include: 'identifiers'
   enum-member:
-    # enum pascal fix
+     enum pascal fix
     match: (?m)^\s*([_A-Z]\w*)(?=\s*(?:;|,|\n))
     captures:
       '1': { name: variable.other.hx }
-    # color blue if it ends with (
+     color blue if it ends with (
     match: \b([_A-Za-z]\w*)(?=\s*\()
     captures:
       '1': { name: entity.name.function.hx }
@@ -252,8 +252,8 @@ repository:
       '1': {name: punctuation.terminator.hx}
     name: meta.interface.hx
     patterns:
-    - include: '#interface-name'
-    - include: '#interface-name-post'
+    - include: 'interface-name'
+    - include: 'interface-name-post'
     - include: '#interface-block'
   interface-name:
     begin: \b(interface)\b
