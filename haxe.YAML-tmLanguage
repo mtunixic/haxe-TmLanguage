@@ -64,9 +64,13 @@ repository:
     - include: '#identifiers'
   enum-member:
     # enum pascal fix
-    match: (?m)^\s*([_A-Z]\w*)(?=\s*(?:;|,|\n))
-    captures:
-      '1': { name: variable.other.hx }
+    - match: (?m)^\s*([_A-Z]\w*)(?=\s*(?:;|,|\n))
+      captures:
+        '1': { name: variable.other.hx }
+    # color blue if it ends with (
+    - match: \b([_A-Za-z]\w*)(?=\s*\()
+      captures:
+        '1': { name: entity.name.function.hx }
   identifiers:
     patterns:
     - include: '#constant-name'
@@ -255,15 +259,6 @@ repository:
     - include: '#parameters'
     - include: '#enum-member'
     - include: '#identifiers'
-  enum-member:
-    # enum pascal fix
-    match: (?m)^\s*([_A-Z]\w*)(?=\s*(?:;|,|\n))
-    captures:
-      '1': { name: variable.other.hx }
-    # color blue if it ends with (
-    match: \b([_A-Za-z]\w*)(?=\s*\()
-    captures:
-      '1': { name: entity.name.function.hx }
   interface:
     begin: (?=interface)
     end: (?<=\})|(;)
